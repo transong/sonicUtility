@@ -56,6 +56,11 @@ public:
 	CCRect m_pageRect;
 	float m_spacing;
 	CCSize m_winSize;
+
+	int m_priority;
+
+	void setPriority(int pri){ m_priority = pri; }
+
 public:
 	CCScrollNode* m_nodeBoss;
 
@@ -78,10 +83,6 @@ public:
 	CCObject*       m_pListener;
 	SEL_CallFunc    m_pfnSelector;
 
-	unsigned int m_soundId;
-	float m_soundDt;
-	float m_previousX;
-    
     CCTouch *m_touch;
 
 };
