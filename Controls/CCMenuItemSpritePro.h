@@ -17,18 +17,27 @@ public :
 
 	void setEnabled(bool bEnabled)
 	{
-		m_bIsEnabled = bEnabled;
+		m_bEnabled = bEnabled;
 		if(bEnabled)
 			setColor(ccc3(255,255,255));
 		else
-			setColor(ccc3(180,180,180));
+			setColor(ccc3(130,130,130));
 	}
+
+	//RGBAProtocol
+	void setColor(const ccColor3B& color);
+	const ccColor3B& getColor(void);
+
+	GLubyte getOpacity(void);
+	void setOpacity(GLubyte opacity);
 
 	static CCMenuItemSpritePro* itemFromNormalSprite(CCNode* sprite);	
 	static CCMenuItemSpritePro* itemFromNormalSprite(CCNode* sprite, CCObject* target, SEL_MenuHandler selector);	
 	bool initFromNormalSprite(CCNode* sprite, CCObject* target, SEL_MenuHandler selector);
 
 	float        m_fOriginalScale;
+
+	bool  m_selectEffectChangeColor;
     
 };
 #endif //__CCMENU_ITEM_SPRITEPRO_H__

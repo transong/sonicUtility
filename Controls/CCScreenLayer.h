@@ -75,8 +75,6 @@ public:
 	short m_totalScreens;
     short m_curScreen;
 
-    float m_scrollDiff;
-
 	vector<CCPoint> m_vecPos;
 	vector<CCNode*> m_vecStaff;
 

@@ -1,7 +1,9 @@
 #include "CCInput.h"
+#include "GameConst.h"
+#include "Utility.h"
 
 #define FONT_NAME                       "Thonburi"
-#define FONT_SIZE                       18
+#define FONT_SIZE                       9
 
 CCInput::CCInput(CCRect& rc)
 :m_responseRect(rc)
@@ -68,7 +70,7 @@ void CCInput::onEnter()
 
 	m_pTextField = CCTextFieldTTF::textFieldWithPlaceHolder("<click>",
 		FONT_NAME,
-		FONT_SIZE);
+		FONT_SIZE*macro_padFactor);
 	addChild(m_pTextField);
 	//m_pTextField->setColor(ccc3(255, 0, 0));
 

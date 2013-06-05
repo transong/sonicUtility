@@ -1,6 +1,9 @@
 #include "CCMenuItemCheckBox.h"
 #include "support/CCPointExtension.h"
 #include "sprite_nodes/CCSprite.h"
+#include "cocos2d.h"
+
+const unsigned int kZoomActionTag = 0xc0c05002;
 
 CCMenuItemCheckBox* CCMenuItemCheckBox::itemFromNormalSprite(CCNode* frameSprite, CCNode* checkSprite)
 {
@@ -26,6 +29,9 @@ bool CCMenuItemCheckBox::initFromNormalSprite(CCNode* frameSprite, CCNode* check
         
 		m_isHide = false;
 		m_isChecked = false;
+
+		m_selectEffectChangeColor = false;
+		m_fOriginalScale = 1.0f;
 
 		m_frameImage->setAnchorPoint(ccp(0, 0));
         m_checkImage->setPosition(ccp(m_frameImage->getContentSize().width/2, m_frameImage->getContentSize().height/2));
@@ -121,4 +127,50 @@ void CCMenuItemCheckBox::setOpacityModifyRGB( bool bValue )
 bool CCMenuItemCheckBox::isOpacityModifyRGB( void )
 {
 	return false;
+}
+
+void CCMenuItemCheckBox::selected()
+{
+
+	m_bSelected = true;
+
+
+	if (m_selectEffectChangeColor)
+	{
+		setColor(ccc3(150,150,150));
+	}
+	else
+	{
+		CCAction *action = getActionByTag(kZoomActionTag);
+		if (action)
+		{
+			this->stopAction(action);
+		}
+		else
+		{
+			m_fOriginalScale = this->getScale();
+		}
+
+		CCAction *zoomAction = CCScaleTo::create(0.1f, m_fOriginalScale*1.25f);
+		zoomAction->setTag(kZoomActionTag);
+		this->runAction(zoomAction);
+	}
+
+}
+void CCMenuItemCheckBox::unselected()
+{
+	m_bSelected = false;
+
+	if (m_selectEffectChangeColor)
+	{
+		setColor(ccc3(255,255,255));
+	}
+	else
+	{
+		this->stopActionByTag(kZoomActionTag);
+		CCAction *zoomAction = CCScaleTo::create(0.1f, m_fOriginalScale);
+		zoomAction->setTag(kZoomActionTag);
+		this->runAction(zoomAction);
+	}
+
 }

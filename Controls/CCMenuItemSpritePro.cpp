@@ -4,6 +4,39 @@
 
 const unsigned int kZoomActionTag = 0xc0c05002;
 
+void CCMenuItemSpritePro::setColor(const ccColor3B& color)
+{
+	CCRGBAProtocol *pRGBAProtocol1 = dynamic_cast<CCRGBAProtocol*>(m_pNormalImage);
+	if(pRGBAProtocol1)pRGBAProtocol1->setColor(color);
+}
+
+const ccColor3B& CCMenuItemSpritePro::getColor(void)
+{
+	CCRGBAProtocol *pRGBAProtocol = dynamic_cast<CCRGBAProtocol*>(m_pNormalImage);
+	if(pRGBAProtocol)
+	{
+		return pRGBAProtocol->getColor();
+	}
+	return ccc3(0,0,0);
+}
+
+GLubyte CCMenuItemSpritePro::getOpacity(void)
+{
+	CCSprite *pRGBAProtocol = dynamic_cast<CCSprite*>(m_pNormalImage);
+	if(pRGBAProtocol)
+	{
+		return pRGBAProtocol->getOpacity();
+	}
+	return 255;
+}
+
+void CCMenuItemSpritePro::setOpacity(GLubyte opacity)
+{
+	CCSprite *pRGBAProtocol1 = dynamic_cast<CCSprite*>(m_pNormalImage);
+	if(pRGBAProtocol1)pRGBAProtocol1->setOpacity(opacity);
+
+}
+
 CCMenuItemSpritePro* CCMenuItemSpritePro::itemFromNormalSprite(CCNode* sprite)
 {
 	return CCMenuItemSpritePro::itemFromNormalSprite(sprite, NULL, NULL);
@@ -23,6 +56,7 @@ bool CCMenuItemSpritePro::initFromNormalSprite(CCNode* sprite, CCObject* target,
 
 	if( CCMenuItem::initWithTarget(target, selector) ) 
 	{	
+		m_selectEffectChangeColor = false;
 		m_fOriginalScale = 1.0f;
 		setNormalImage(sprite);
 		setContentSize(sprite->getContentSize());
@@ -33,30 +67,46 @@ bool CCMenuItemSpritePro::initFromNormalSprite(CCNode* sprite, CCObject* target,
 
 void CCMenuItemSpritePro::selected()
 {
-	//setColor(ccc3(150,150,150));
-	m_bIsSelected = true;
 
-	CCAction *action = getActionByTag(kZoomActionTag);
-	if (action)
+	m_bSelected = true;
+
+
+	if (m_selectEffectChangeColor)
 	{
-		this->stopAction(action);
+		setColor(ccc3(150,150,150));
 	}
 	else
 	{
-		m_fOriginalScale = this->getScale();
+		CCAction *action = getActionByTag(kZoomActionTag);
+		if (action)
+		{
+			this->stopAction(action);
+		}
+		else
+		{
+			m_fOriginalScale = this->getScale();
+		}
+
+		CCAction *zoomAction = CCScaleTo::create(0.1f, m_fOriginalScale*1.25f);
+		zoomAction->setTag(kZoomActionTag);
+		this->runAction(zoomAction);
 	}
 
-	CCAction *zoomAction = CCScaleTo::create(0.1f, m_fOriginalScale*1.25f);
-	zoomAction->setTag(kZoomActionTag);
-	this->runAction(zoomAction);
 }
 void CCMenuItemSpritePro::unselected()
 {
-	//setColor(ccc3(255,255,255));
-	m_bIsSelected = false;
+	m_bSelected = false;
 
-	this->stopActionByTag(kZoomActionTag);
-	CCAction *zoomAction = CCScaleTo::create(0.1f, m_fOriginalScale);
-	zoomAction->setTag(kZoomActionTag);
-	this->runAction(zoomAction);
+	if (m_selectEffectChangeColor)
+	{
+	    setColor(ccc3(255,255,255));
+	}
+	else
+	{
+		this->stopActionByTag(kZoomActionTag);
+		CCAction *zoomAction = CCScaleTo::create(0.1f, m_fOriginalScale);
+		zoomAction->setTag(kZoomActionTag);
+		this->runAction(zoomAction);
+	}
+
 }

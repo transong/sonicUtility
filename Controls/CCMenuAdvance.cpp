@@ -10,12 +10,12 @@ CCMenuAdvance::CCMenuAdvance()
 :m_menuType(MenuType_Block)
 ,m_priority(kCCMenuHandlerPriority)
 ,m_isLarger(true)
-,m_largerIndent(8)
 ,m_isEnabled(true)
 {
 	m_responseRect = CCRectMake(0, 0, CCDirector::sharedDirector()->getWinSize().width, CCDirector::sharedDirector()->getWinSize().height);
 
-	//m_tapEnd = "menu_sel.wav";
+	m_largerIndent = ccp(8, 8);
+	m_tapEnd = "buttontap.mp3";
 }
 
 void CCMenuAdvance::registerWithTouchDispatcher()
@@ -28,14 +28,28 @@ CCMenuAdvance* CCMenuAdvance::menuWithItems(CCMenuItem* item, ...)
 {
 	va_list args;
 	va_start(args,item);
+
+	CCArray* pArray = NULL;
+	if( item )
+	{
+		pArray = CCArray::create(item, NULL);
+		CCMenuItem *i = va_arg(args, CCMenuItem*);
+		while(i)
+		{
+			pArray->addObject(i);
+			i = va_arg(args, CCMenuItem*);
+		}
+	}
+
 	CCMenuAdvance *pRet = new CCMenuAdvance();
-	if (pRet && pRet->initWithItems(item, args))
+	if (pRet && pRet->initWithArray(pArray))
 	{
 		pRet->setPosition(CCPointZero);
 		pRet->autorelease();
 		va_end(args);
 		return pRet;
 	}
+
 	va_end(args);
 	CC_SAFE_DELETE(pRet);
 		return NULL;
@@ -48,8 +62,7 @@ CCMenuAdvance* CCMenuAdvance::menuWithItem(CCMenuItem* item)
 
 CCMenuItem* CCMenuAdvance::itemForTouch(CCTouch *touch)
 {
-	CCPoint touchLocation = touch->locationInView();
-	touchLocation = CCDirector::sharedDirector()->convertToGL(touchLocation);
+	CCPoint touchLocation = touch->getLocation();
 
 	if (m_pChildren && m_pChildren->count() > 0)
 	{
@@ -65,12 +78,12 @@ CCMenuItem* CCMenuAdvance::itemForTouch(CCTouch *touch)
                 
 				if (m_isLarger)
 				{
-					r.origin =  ccp(-m_largerIndent, -m_largerIndent);
-					r.size = CCSizeMake(r.size.width + 2*m_largerIndent, r.size.height + 2*m_largerIndent);
+					r.origin =  ccp(-m_largerIndent.x, -m_largerIndent.y);
+					r.size = CCSizeMake(r.size.width + 2*m_largerIndent.x, r.size.height + 2*m_largerIndent.y);
 				}
 				
 
-				if (CCRect::CCRectContainsPoint(r, local))
+				if (r.containsPoint(local))
 				{
 					return (CCMenuItem*)pChild;
 				}
@@ -84,14 +97,14 @@ CCMenuItem* CCMenuAdvance::itemForTouch(CCTouch *touch)
 
 bool CCMenuAdvance::ccTouchBegan(CCTouch* touch, CCEvent* event)
 {
-	CCPoint a = CCDirector::sharedDirector()->convertToGL(touch->locationInView());
+	CCPoint a = touch->getLocation();
 
-	if (!CCRect::CCRectContainsPoint(m_responseRect, a))
+	if (!m_responseRect.containsPoint(a))
 	{
 		return true;
 	}
 
-	if (m_eState != kCCMenuStateWaiting || ! m_bIsVisible)
+	if (m_eState != kCCMenuStateWaiting || ! m_bVisible)
 	{
 		return false;
 	}
@@ -116,7 +129,7 @@ bool CCMenuAdvance::ccTouchBegan(CCTouch* touch, CCEvent* event)
 			m_pSelectedItem->activate();
 
 			if(!m_tapEnd.empty())
-				Utility::playSFX(m_tapEnd.c_str());
+				Utility::playSFX(m_tapEnd.c_str(), false, 0.05f);
 		}
 		
 		return true;
@@ -130,7 +143,7 @@ void CCMenuAdvance::ccTouchMoved(CCTouch* touch, CCEvent* event)
 {
 	if (MenuType_Ghost == m_menuType || MenuType_PreAct == m_menuType)
 	{
-		if (m_pSelectedItem)
+		if (m_pSelectedItem && ccpDistanceSQ(touch->getLocation(), touch->getPreviousLocation()) > 16)
 		{   
 			m_pSelectedItem->unselected();
 			m_eState = kCCMenuStateWaiting;
@@ -170,7 +183,7 @@ void CCMenuAdvance::ccTouchEnded(CCTouch* touch, CCEvent* event)
 			}
 
 			if(!m_tapEnd.empty())
-			  Utility::playSFX(m_tapEnd.c_str());
+			  Utility::playSFX(m_tapEnd.c_str(), false, 0.05f);
 		}
 		m_eState = kCCMenuStateWaiting;
 	}
@@ -196,7 +209,7 @@ void CCMenuAdvance::ccTouchEnded(CCTouch* touch, CCEvent* event)
 			}
 
 			if(!m_tapEnd.empty())
-			   Utility::playSFX(m_tapEnd.c_str());
+			   Utility::playSFX(m_tapEnd.c_str(), false, 0.05f);
 		}
 		m_eState = kCCMenuStateWaiting;
 	}

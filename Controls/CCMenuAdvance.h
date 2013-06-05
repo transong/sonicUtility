@@ -40,7 +40,7 @@ public:
 	void setMenuType(int type){ m_menuType = type; }
 	void setPriority(int pri){ m_priority = pri; }
 	void setIsLarger(bool b) { m_isLarger = b; }
-	void setLargerIndent(int indent){ m_largerIndent = indent;}
+	void setLargerIndent(CCPoint indent){ m_largerIndent = indent;}
     
 	void setEnabled( bool value );
 public:
@@ -51,7 +51,7 @@ public:
 protected:
 private:
 	bool m_isLarger;
-	int  m_largerIndent;
+	CCPoint m_largerIndent;
 	CCRect m_responseRect;
 	int m_menuType;
 	int m_priority;

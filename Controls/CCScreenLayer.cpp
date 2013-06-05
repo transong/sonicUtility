@@ -8,7 +8,6 @@ static const float kDragOverItemRate = 0.35;
 
 CCScreenLayer::CCScreenLayer()
 : m_isVertical(false)
-,m_scrollDiff(0.0f)
 ,m_staffNumPerPage(8)
 ,m_totalScreens(10)
 ,m_curScreen(0)
@@ -183,15 +182,24 @@ void CCScreenLayer::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 	CCPoint a = pTouch->getPreviousLocation();
 	CCPoint b = pTouch->getLocation();
 	CCPoint nowPosition = m_nodeBoss->getPosition();
+
+	float offset = 0;
+
 	if(m_isVertical)
 	{
-		m_scrollDiff = (b.y - a.y);
-		nowPosition.y += ( b.y - a.y );
+		offset = b.y - a.y;
+
+		nowPosition.y += offset;
 	}
 	else
 	{
-		m_scrollDiff = (b.x - a.x);
-	    nowPosition.x += ( b.x - a.x );
+		offset = b.x - a.x;
+
+		float curX = m_nodeBoss->getPosition().x;
+		if (curX > 0 || curX < -((m_vecStaff.size() - m_staffNumPerPage)*(m_pageRect.size.width/m_staffNumPerPage)))
+			offset /= 2;
+
+	    nowPosition.x += offset;
 	}
 	m_nodeBoss->setPosition(nowPosition);
     

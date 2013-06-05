@@ -9,7 +9,7 @@ Copyright (c) Sonic Zhao
 
 using namespace cocos2d;
 
-class CCMenuItemCheckBox : public CCMenuItem, public CCRGBAProtocol
+class CCMenuItemCheckBox : public CCMenuItem
 {
 
 public:
@@ -18,23 +18,16 @@ public:
 	void setIsChecked(bool bCheck);
 	//    
     
-	void selected()
-	{
-		setColor(ccc3(150,150,150));
-		CCMenuItem::selected();
-	}
-	void unselected()
-	{
-		setColor(ccc3(255,255,255));
-		CCMenuItem::unselected();
-	}
+	void selected();
+	void unselected();
+
 	void setEnabled(bool bEnabled)
 	{
-		m_bIsEnabled = bEnabled;
-//  		if(bEnabled)
-//  			setColor(ccc3(255,255,255));
-//  		else
-//  			setColor(ccc3(150,150,150));
+		m_bEnabled = bEnabled;
+  		if(bEnabled)
+  			setColor(ccc3(255,255,255));
+  		else
+  			setColor(ccc3(150,150,150));
 	}
     
 	void activate();
@@ -61,6 +54,9 @@ private:
     bool            m_isChecked;
 	CCNode*         m_checkImage;
 	CCNode*         m_frameImage;
+
+	float        m_fOriginalScale;
+	bool  m_selectEffectChangeColor;
 
 };
 
