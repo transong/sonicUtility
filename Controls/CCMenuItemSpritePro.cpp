@@ -37,12 +37,12 @@ void CCMenuItemSpritePro::setOpacity(GLubyte opacity)
 
 }
 
-CCMenuItemSpritePro* CCMenuItemSpritePro::itemFromNormalSprite(CCNode* sprite)
+CCMenuItemSpritePro* CCMenuItemSpritePro::create(CCNode* sprite)
 {
-	return CCMenuItemSpritePro::itemFromNormalSprite(sprite, NULL, NULL);
+	return CCMenuItemSpritePro::create(sprite, NULL, NULL);
 }
 
-CCMenuItemSpritePro* CCMenuItemSpritePro::itemFromNormalSprite(CCNode* sprite, CCObject* target, SEL_MenuHandler selector)
+CCMenuItemSpritePro* CCMenuItemSpritePro::create(CCNode* sprite, CCObject* target, SEL_MenuHandler selector)
 {
 	CCMenuItemSpritePro *pRet = new CCMenuItemSpritePro();
 	pRet->initFromNormalSprite(sprite, target, selector); 

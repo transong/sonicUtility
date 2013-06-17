@@ -24,8 +24,8 @@ public:
     
 	CCMenuAdvance();
 
-	static CCMenuAdvance* menuWithItems(CCMenuItem* item, ...);
-	static CCMenuAdvance* menuWithItem(CCMenuItem* item);
+	static CCMenuAdvance* create(CCMenuItem* item, ...);
+	static CCMenuAdvance* createWithItem(CCMenuItem* item);
     
 	virtual void registerWithTouchDispatcher();
 	virtual bool ccTouchBegan(CCTouch* touch, CCEvent* event);

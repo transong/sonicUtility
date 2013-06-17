@@ -33,7 +33,7 @@ void CCScreenLayer::registerWithTouchDispatcher()
 	pDirector->getTouchDispatcher()->addTargetedDelegate(this, m_priority, true);
 }
 
-CCScreenLayer* CCScreenLayer::nodeWithStaff(vector<CCNode*>* nodes, CCRect pageRect)
+CCScreenLayer* CCScreenLayer::create(vector<CCNode*>* nodes, CCRect pageRect)
 {
 	CCScreenLayer* pRet = new CCScreenLayer();
 	if (pRet && pRet->initWithNodes(nodes, pageRect))

@@ -45,8 +45,8 @@ public:
 	void setIsHide(bool isHide){m_isHide = isHide;}
 
 	//the reason to use CCNode instead of string is it's efficient to generate a ccsprite from a spritesheet
-	static CCMenuItemCheckBox* itemFromNormalSprite(CCNode* frameSprite, CCNode* checkSprite);	
-	static CCMenuItemCheckBox* itemFromNormalSprite(CCNode* frameSprite, CCNode* checkSprite, CCObject* target, SEL_MenuHandler selector);	
+	static CCMenuItemCheckBox* create(CCNode* frameSprite, CCNode* checkSprite);	
+	static CCMenuItemCheckBox* create(CCNode* frameSprite, CCNode* checkSprite, CCObject* target, SEL_MenuHandler selector);	
 	bool initFromNormalSprite(CCNode* frameSprite, CCNode* checkSprite, CCObject* target, SEL_MenuHandler selector);
 protected:
 private:

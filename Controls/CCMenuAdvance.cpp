@@ -24,7 +24,7 @@ void CCMenuAdvance::registerWithTouchDispatcher()
 	pDirector->getTouchDispatcher()->addTargetedDelegate(this, m_priority, (MenuType_Ghost == m_menuType) ? false : true);
 }
 
-CCMenuAdvance* CCMenuAdvance::menuWithItems(CCMenuItem* item, ...)
+CCMenuAdvance* CCMenuAdvance::create(CCMenuItem* item, ...)
 {
 	va_list args;
 	va_start(args,item);
@@ -55,9 +55,9 @@ CCMenuAdvance* CCMenuAdvance::menuWithItems(CCMenuItem* item, ...)
 		return NULL;
 }
 
-CCMenuAdvance* CCMenuAdvance::menuWithItem(CCMenuItem* item)
+CCMenuAdvance* CCMenuAdvance::createWithItem(CCMenuItem* item)
 {
-	return menuWithItems(item, NULL);
+	return create(item, NULL);
 }
 
 CCMenuItem* CCMenuAdvance::itemForTouch(CCTouch *touch)
@@ -143,7 +143,7 @@ void CCMenuAdvance::ccTouchMoved(CCTouch* touch, CCEvent* event)
 {
 	if (MenuType_Ghost == m_menuType || MenuType_PreAct == m_menuType)
 	{
-		if (m_pSelectedItem && ccpDistanceSQ(touch->getLocation(), touch->getPreviousLocation()) > 16)
+		if (m_pSelectedItem && ccpDistanceSQ(touch->getLocation(), touch->getPreviousLocation()) > 36)
 		{   
 			m_pSelectedItem->unselected();
 			m_eState = kCCMenuStateWaiting;

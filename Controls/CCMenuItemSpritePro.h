@@ -31,8 +31,8 @@ public :
 	GLubyte getOpacity(void);
 	void setOpacity(GLubyte opacity);
 
-	static CCMenuItemSpritePro* itemFromNormalSprite(CCNode* sprite);	
-	static CCMenuItemSpritePro* itemFromNormalSprite(CCNode* sprite, CCObject* target, SEL_MenuHandler selector);	
+	static CCMenuItemSpritePro* create(CCNode* sprite);	
+	static CCMenuItemSpritePro* create(CCNode* sprite, CCObject* target, SEL_MenuHandler selector);	
 	bool initFromNormalSprite(CCNode* sprite, CCObject* target, SEL_MenuHandler selector);
 
 	float        m_fOriginalScale;

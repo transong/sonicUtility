@@ -5,12 +5,12 @@
 
 const unsigned int kZoomActionTag = 0xc0c05002;
 
-CCMenuItemCheckBox* CCMenuItemCheckBox::itemFromNormalSprite(CCNode* frameSprite, CCNode* checkSprite)
+CCMenuItemCheckBox* CCMenuItemCheckBox::create(CCNode* frameSprite, CCNode* checkSprite)
 {
-   return CCMenuItemCheckBox::itemFromNormalSprite(frameSprite, checkSprite, NULL, NULL);
+   return CCMenuItemCheckBox::create(frameSprite, checkSprite, NULL, NULL);
 }
 
-CCMenuItemCheckBox* CCMenuItemCheckBox::itemFromNormalSprite(CCNode* frameSprite, CCNode* checkSprite, CCObject* target, SEL_MenuHandler selector)
+CCMenuItemCheckBox* CCMenuItemCheckBox::create(CCNode* frameSprite, CCNode* checkSprite, CCObject* target, SEL_MenuHandler selector)
 {
 	CCMenuItemCheckBox *pRet = new CCMenuItemCheckBox();
 	pRet->initFromNormalSprite(frameSprite, checkSprite, target, selector); 

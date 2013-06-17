@@ -26,7 +26,7 @@ public:
 	void setPage(int page);
 
 	//
-	static CCScreenLayer* nodeWithStaff(vector<CCNode*>* nodes, CCRect pageRect);
+	static CCScreenLayer* create(vector<CCNode*>* nodes, CCRect pageRect);
 
 	bool initWithNodes(vector<CCNode*>* nodes, CCRect pageRect); 
 
